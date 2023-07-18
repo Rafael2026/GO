@@ -7,6 +7,7 @@ import (
   "net/http"
   "html/template"
   "regexp"
+  "html"
 )
 
 type Page struct {
@@ -44,7 +45,9 @@ func main() {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-  fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
+  userText := html.EscapeString(r.URL.Path[1:])
+  response := fmt.Sprintf("Hi there, I love %s!", userText)
+  fmt.Fprint(w, response)
 }
 
 func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
